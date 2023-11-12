@@ -136,7 +136,10 @@
     <ClCompile Include="Chapter03\main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Chapter04\main.cpp" />
+    <ClCompile Include="Chapter04\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Chapter05\main.cpp" />
     <ClCompile Include="Headers\Camera.cpp" />
     <ClCompile Include="Headers\Geometries.cpp" />
     <ClCompile Include="Headers\Material.cpp" />
@@ -171,6 +174,8 @@
     <None Include="Chapter03\shader.vs" />
     <None Include="Chapter04\shader.fs" />
     <None Include="Chapter04\shader.vs" />
+    <None Include="Chapter05\shader.fs" />
+    <None Include="Chapter05\shader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

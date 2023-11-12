@@ -60,6 +60,9 @@
     <ClCompile Include="Chapter04\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Chapter05\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Camera.h">
@@ -105,5 +108,7 @@
     <None Include="Chapter03\shader.vs" />
     <None Include="Chapter04\shader.fs" />
     <None Include="Chapter04\shader.vs" />
+    <None Include="Chapter05\shader.fs" />
+    <None Include="Chapter05\shader.vs" />
   </ItemGroup>
 </Project>
