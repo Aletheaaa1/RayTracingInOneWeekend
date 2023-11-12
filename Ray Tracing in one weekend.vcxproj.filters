@@ -48,6 +48,18 @@
     <ClCompile Include="Headers\VertexBufferObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Chapter01\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Chapter02\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Chapter03\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Chapter04\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Camera.h">
@@ -83,5 +95,15 @@
     <ClInclude Include="Headers\VertexBufferObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chapter01\shader.vs" />
+    <None Include="Chapter01\shader.fs" />
+    <None Include="Chapter02\shader.fs" />
+    <None Include="Chapter02\shader.vs" />
+    <None Include="Chapter03\shader.fs" />
+    <None Include="Chapter03\shader.vs" />
+    <None Include="Chapter04\shader.fs" />
+    <None Include="Chapter04\shader.vs" />
   </ItemGroup>
 </Project>

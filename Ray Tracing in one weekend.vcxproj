@@ -127,6 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Chapter01\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Chapter02\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Chapter03\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Chapter04\main.cpp" />
     <ClCompile Include="Headers\Camera.cpp" />
     <ClCompile Include="Headers\Geometries.cpp" />
     <ClCompile Include="Headers\Material.cpp" />
@@ -151,6 +161,16 @@
     <ClInclude Include="Headers\Texture.h" />
     <ClInclude Include="Headers\VertexArrayObject.h" />
     <ClInclude Include="Headers\VertexBufferObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chapter01\shader.fs" />
+    <None Include="Chapter01\shader.vs" />
+    <None Include="Chapter02\shader.fs" />
+    <None Include="Chapter02\shader.vs" />
+    <None Include="Chapter03\shader.fs" />
+    <None Include="Chapter03\shader.vs" />
+    <None Include="Chapter04\shader.fs" />
+    <None Include="Chapter04\shader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
