@@ -320,13 +320,15 @@ void main()
 	vec3 col = vec3(0.0);
 
 	vec2 texSize = 1.0 / vec2(800, 600);
-	int ns = 100;
-	for(int i=0; i<ns; i++)
+	for(int i=-1; i<=1; i++)
 	{
-		Ray ray = AARay(camera, texCoord + vec2(rand(), rand()) * texSize);
-		col += WorldTrace(ray, world, 50);
+		for(int j=-1; j<=1; j++)
+		{
+			Ray ray = AARay(camera, texCoord + vec2(i, j) * texSize * 0.5);
+			col += WorldTrace(ray, world, 50);
+		}
 	}
-	col /= ns;
+	col /= 9.0;
 	col = pow(col, vec3(1.0 / 2.0));
 
 	fragColor = vec4(col, 1.0);
