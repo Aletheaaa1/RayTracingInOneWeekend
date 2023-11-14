@@ -205,17 +205,6 @@ bool MetallicScatter(in Metallic metallic, in Ray incident, in HitRecord hitReco
 	return dot(scattered.direction, hitRecord.normal) > 0.0;
 }
 
-//	æ¯‘µÃÂ…¢…‰
-bool DielectricScatter(in Dielectric dielectric, in Ray incident, in HitRecord hitRecord, out Ray scattered, out vec3 attenuation)
-{
-	attenuation = dielectric.albedo;
-
-	scattered.origin = hitRecord.position;
-	scattered.direction = hitRecord.normal + random_in_unit_sphere();
-	scattered.direction = normalize(scattered.direction);
-	return true;
-}
-
 bool MaterialScatter(in int materialType, in int material, in Ray incident, in HitRecord hitRecord, out Ray scatter, out vec3 attenuation)
 {
 	if(materialType == MAT_LAMBERTIAN)
@@ -226,10 +215,6 @@ bool MaterialScatter(in int materialType, in int material, in Ray incident, in H
 	{
 		return MetallicScatter(metallicMaterials[material], incident, hitRecord, scatter, attenuation);
 	}
-	else if(materialType == MAT_DIELECTRIC){
-		return DielectricScatter(dielectricMaterials[material], incident, hitRecord, scatter, attenuation);
-	}
-
 	return false;
 }
 /////////////////////////////////////////////////////
