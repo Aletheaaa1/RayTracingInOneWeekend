@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <random>
 
 #include <iostream>
 
@@ -145,6 +146,7 @@ int main()
 		shader.SetUniform3v("camera.horizontal", glm::vec3{ 4.0f, 0.0f, 0.0f });
 		shader.SetUniform3v("camera.vertical", glm::vec3{ 0.0f, 3.0f, 0.0f });
 		shader.SetUniform3v("camera.origin", glm::vec3{ 0.0f, 0.0f, 0.0f });
+
 		Geometries::RenderCube();
 
 		/* Swap front and back buffers */
