@@ -181,7 +181,7 @@ int main()
 		shader.SetUniform3v("cameraTarget", target);
 		shader.SetUniform3v("cameraUp", up);
 
-		Geometries::RenderCube();
+		Geometries::RenderQuad();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

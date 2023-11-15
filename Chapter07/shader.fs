@@ -1,7 +1,6 @@
-#version 460
+#version 330
 
 in vec2 texCoord;
-in vec2 fragPos;
 
 uniform vec3 lower_left_corner;
 uniform vec3 horizontal;
@@ -127,9 +126,9 @@ struct World
 World NewWorld()
 {
 	World world;
-	world.objectNumber = 4;
-	world.objects[0] = NewSphere(vec3(0.0, 0.0, -1.0), 0.5, MAT_LAMBERTIAN, 2);
-	world.objects[1] = NewSphere(vec3(1.0, -0.0, -1.0), 0.5, MAT_DIELECTRIC, 2);
+	world.objectNumber = 1;
+	world.objects[1] = NewSphere(vec3(0.0, 0.0, -1.0), 0.5, MAT_LAMBERTIAN, 2);
+	world.objects[0] = NewSphere(vec3(1.0, -0.0, -1.0), 0.5, MAT_DIELECTRIC, 2);
 	world.objects[2] = NewSphere(vec3(-1.0, 0.0, -1.0), 0.5, MAT_METALLIC, 2);
 	world.objects[3] = NewSphere(vec3(0.0, -100.5, -1.0), 100.0, MAT_LAMBERTIAN, 3);
 
@@ -454,7 +453,7 @@ vec3 WorldTrace(Ray ray, World world, int depth)
 	while(depth > 0)
 	{
 		depth--;
-		if(WorldHit(world, ray, 0.001, 100000.0, hitRecord))
+		if(WorldHit(world, ray, 0.001, 10000.0, hitRecord))
 		{
 			Ray scaterRay;
 			vec3 attenuation;
@@ -492,8 +491,8 @@ Ray AARay(Camera camera, vec2 offset)
 
 void main()
 {
-	float u = fragPos.x;
-	float v = fragPos.y;
+	float u = texCoord.x;
+	float v = texCoord.y;
 
 	InitScience();
 
