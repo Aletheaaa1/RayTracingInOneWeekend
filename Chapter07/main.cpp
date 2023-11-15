@@ -2,27 +2,32 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <random>
 
 #include <iostream>
 
-#include "../Headers/Model.h"
 #include "../Headers/Shader.h"
-#include "../Headers/Texture.h"
-#include "../Headers/Camera.h"
 #include "../Headers/Geometries.h"
 
-Camera camera{ glm::vec3(0, 0.0f, 0.0f), 0.0f, 0.0f, glm::vec3(0, 1.0f, 0) };
+glm::vec3 origin = glm::vec3{ 0.0f, 0.0f, 0.0f };
+glm::vec3 target = glm::vec3{ 0.0f, 0.0f, -1.0f };
+glm::vec3 up = glm::vec3{ 0.0f, 1.0f, 0.0f };
+
 float speed = 0.0001f;
 
 constexpr int SCREEN_WIDTH = 800;
-constexpr int SCREEN_HEIGHT = 600;
+constexpr int SCREEN_HEIGHT = 400;
 
 #pragma region Interaction
 float x_last, y_last;
+float theta = 0.0f, phi = 0.0f;
 bool first_mouse = true;
-void MouseCallback(GLFWwindow* window, double x_pos, double y_pos)
+
+void UpdatePosition(glm::vec3& position, glm::vec3& target, glm::vec3& up, float speed_x, float speed_y, float speed_z, GLFWwindow* window)
 {
+	double x_pos, y_pos;
+	float view_speed = 0.4f;
+	glfwGetCursorPos(window, &x_pos, &y_pos);
+
 	if (first_mouse == true)
 	{
 		x_last = x_pos;
@@ -33,55 +38,83 @@ void MouseCallback(GLFWwindow* window, double x_pos, double y_pos)
 	float x_offset = x_pos - x_last;
 	float y_offset = y_pos - y_last;
 
+	theta += x_offset / SCREEN_WIDTH * 360.0f * view_speed;
+	phi += y_offset / SCREEN_HEIGHT * 180.0f * view_speed;
+
+	if (phi > 90.0f)
+	{
+		phi = 90.0f;
+	}
+	else if (phi < -90.0f)
+	{
+		phi = -90.0f;
+	}
+
+	float y = sin(glm::radians(phi));
+	float x = cos(glm::radians(phi)) * cos(glm::radians(theta));
+	float z = cos(glm::radians(phi)) * sin(glm::radians(theta));
+
+	target += glm::vec3(x, -y, z);
+
+	glm::vec3 forword = glm::normalize(position - target);
+
+	position += forword * speed_z;
+	position += glm::normalize(glm::cross(up, forword)) * speed_x;
+	position += up * speed_y;
+	target = position - forword;
+
 	x_last = x_pos;
 	y_last = y_pos;
-
-	camera.UpdateCameraView(x_offset, y_offset);
-	camera.GetViewMatrix();
 }
 
 void ProcessInput(GLFWwindow* window)
 {
+	float speed = 0.2f;
+	float speed_x = 0.0f;
+	float speed_y = 0.0f;
+	float speed_z = 0.0f;
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		camera.speedZ = -speed;
+		speed_z -= speed;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		camera.speedZ = speed;
+		speed_z += speed;
 	}
 	else
 	{
-		camera.speedZ = 0.0f;
+		speed_z = 0.0f;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		camera.speedX = -speed;
+		speed_x -= speed;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		camera.speedX = speed;
+		speed_x += speed;
 	}
 	else
 	{
-		camera.speedX = 0.0f;
+		speed_x = 0.0f;
 	}
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		camera.speedY = speed;
+		speed_y += speed;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 	{
-		camera.speedY = -speed;
+		speed_y -= speed;
 	}
 	else
 	{
-		camera.speedY = 0.0f;
+		speed_y = 0.0f;
 	}
+
+	UpdatePosition(origin, target, up, speed_x, speed_y, speed_z, window);
 }
 #pragma endregion Interaction
 
@@ -96,7 +129,7 @@ int main()
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(800, 600, "Hello World", nullptr, nullptr);
+	window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", nullptr, nullptr);
 	if (!window)
 	{
 		glfwTerminate();
@@ -116,7 +149,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, false);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPosCallback(window, MouseCallback);
+	//glfwSetCursorPosCallback(window, MouseCallback);
 
 #pragma region Configue
 	Shader shader{ "./Chapter07/shader.vs", "./Chapter07/shader.fs" };
@@ -142,10 +175,11 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.Bind();
-		shader.SetUniform3v("camera.lower_left_corner", glm::vec3{ -2.0f, -1.5f, -1.0f });
-		shader.SetUniform3v("camera.horizontal", glm::vec3{ 4.0f, 0.0f, 0.0f });
-		shader.SetUniform3v("camera.vertical", glm::vec3{ 0.0f, 3.0f, 0.0f });
-		shader.SetUniform3v("camera.origin", glm::vec3{ 0.0f, 0.0f, 0.0f });
+
+		shader.SetUniform2v("screenSize", glm::vec2{ SCREEN_WIDTH, SCREEN_HEIGHT });
+		shader.SetUniform3v("cameraPos", origin);
+		shader.SetUniform3v("cameraTarget", target);
+		shader.SetUniform3v("cameraUp", up);
 
 		Geometries::RenderCube();
 
@@ -161,7 +195,6 @@ int main()
 		{
 			speed = 0.00005;
 			ProcessInput(window);
-			camera.UpdateCameraPosition();
 		}
 	}
 
