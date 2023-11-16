@@ -126,9 +126,9 @@ struct World
 World NewWorld()
 {
 	World world;
-	world.objectNumber = 1;
-	world.objects[1] = NewSphere(vec3(0.0, 0.0, -1.0), 0.5, MAT_LAMBERTIAN, 2);
-	world.objects[0] = NewSphere(vec3(1.0, -0.0, -1.0), 0.5, MAT_DIELECTRIC, 2);
+	world.objectNumber = 4;
+	world.objects[0] = NewSphere(vec3(0.0, 0.0, -1.0), 0.5, MAT_LAMBERTIAN, 2);
+	world.objects[1] = NewSphere(vec3(1.0, -0.0, -1.0), 0.5, MAT_DIELECTRIC, 2);
 	world.objects[2] = NewSphere(vec3(-1.0, 0.0, -1.0), 0.5, MAT_METALLIC, 2);
 	world.objects[3] = NewSphere(vec3(0.0, -100.5, -1.0), 100.0, MAT_LAMBERTIAN, 3);
 
@@ -310,7 +310,9 @@ bool DielectricScatter2(in Dielectric dielectric, in Ray incident, in HitRecord 
 	else
 	{
 		scattered.origin = hitRecord.position;
-		scattered.direction = reflect(incident.direction, hitRecord.normal) + dielectric.roughness * random_in_unit_sphere();
+		scattered.direction = refracted;
+//		scattered.origin = hitRecord.position;
+//		scattered.direction = reflect(incident.direction, hitRecord.normal) + dielectric.roughness * random_in_unit_sphere();
 	}
 
 	return true;
@@ -477,10 +479,9 @@ vec3 WorldTrace(Ray ray, World world, int depth)
 
 	return bgColor * frac;
 }
-
 Ray AARay(Camera camera, vec2 offset)
 {
-	Ray ray = NewRay(camera.origin,
+	Ray ray = NewRay(camera.origin ,
 		camera.lower_left_corner +
 		offset.x * camera.horizontal +
 		offset.y * camera.vertical -

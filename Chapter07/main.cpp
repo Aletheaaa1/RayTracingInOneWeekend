@@ -8,7 +8,7 @@
 #include "../Headers/Shader.h"
 #include "../Headers/Geometries.h"
 
-glm::vec3 origin = glm::vec3{ 0.0f, 0.0f, 0.0f };
+glm::vec3 origin = glm::vec3{ 0.0f, 5.0f, 5.0f };
 glm::vec3 target = glm::vec3{ 0.0f, 0.0f, -1.0f };
 glm::vec3 up = glm::vec3{ 0.0f, 1.0f, 0.0f };
 
@@ -25,7 +25,7 @@ bool first_mouse = true;
 void UpdatePosition(glm::vec3& position, glm::vec3& target, glm::vec3& up, float speed_x, float speed_y, float speed_z, GLFWwindow* window)
 {
 	double x_pos, y_pos;
-	float view_speed = 0.4f;
+	float view_speed = 0.2f;
 	glfwGetCursorPos(window, &x_pos, &y_pos);
 
 	if (first_mouse == true)
@@ -54,7 +54,7 @@ void UpdatePosition(glm::vec3& position, glm::vec3& target, glm::vec3& up, float
 	float x = cos(glm::radians(phi)) * cos(glm::radians(theta));
 	float z = cos(glm::radians(phi)) * sin(glm::radians(theta));
 
-	target += glm::vec3(x, -y, z);
+	//target += glm::vec3(x, -y, z);
 
 	glm::vec3 forword = glm::normalize(position - target);
 
